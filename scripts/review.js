@@ -12,7 +12,7 @@ if (!GEMINI_API_KEY) {
 const diff = execSync("git diff origin/main...HEAD").toString();
 
 if (!diff.trim()) {
-  console.log("No changes against origin/main — nothing to review.");
+  console.log("No changes against origin/main — nothing to reviewwww.");
   process.exit(0);
 }
 
