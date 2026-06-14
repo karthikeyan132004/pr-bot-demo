@@ -1,8 +1,12 @@
 {
   "name": "pr-bot-demo",
   "version": "1.0.0",
-  "description": "Zero-cost PR review bot using GitHub Actions",
+  "description": "AI PR review bot using GitHub Actions + Gemini",
+  "type": "module",
   "scripts": {
     "review": "node scripts/review.js"
+  },
+  "dependencies": {
+    "axios": "^1.6.0"
   }
 }
