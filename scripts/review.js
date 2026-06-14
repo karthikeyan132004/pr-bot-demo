@@ -20,14 +20,16 @@ if (!diff.trim()) {
 const trimmedDiff = diff.slice(0, 12000);
 
 // 3. Call Gemini
-const response = await axios.post(
-  "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent",
-  {
-    contents: [
-      {
-        parts: [
-          {
-            text: `You are a senior software engineer performing a strict pull request review.
+let response;
+try {
+  response = await axios.post(
+    "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent",
+    {
+      contents: [
+        {
+          parts: [
+            {
+              text: `You are a senior software engineer performing a strict pull request review.
 
 Rules:
 - Be precise.
@@ -37,18 +39,25 @@ Rules:
 
 PR DIFF:
 ${trimmedDiff}`,
-          },
-        ],
-      },
-    ],
-  },
-  {
-    headers: {
-      "Content-Type": "application/json",
-      "x-goog-api-key": GEMINI_API_KEY,
+            },
+          ],
+        },
+      ],
     },
-  }
-);
+    {
+      headers: {
+        "Content-Type": "application/json",
+        "x-goog-api-key": GEMINI_API_KEY,
+      },
+    }
+  );
+} catch (err) {
+  // Surface the real reason instead of a generic stack trace
+  console.error("❌ Gemini API call failed.");
+  console.error("Status:", err.response?.status);
+  console.error("Body:", JSON.stringify(err.response?.data ?? err.message, null, 2));
+  process.exit(1);
+}
 
 // 4. Extract AI response defensively
 const review =
